@@ -25,7 +25,7 @@ struct swim_ioApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().environmentObject(AppViewModel())
         }
         .modelContainer(sharedModelContainer)
     }
