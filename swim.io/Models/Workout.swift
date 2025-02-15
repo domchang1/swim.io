@@ -15,7 +15,7 @@ class Workout: Identifiable {
     var username: String
     var totalDistance: Int
     @Relationship(deleteRule: .cascade) var sets = [SwimSet]()
-    var caption: String?
+    var caption: String
     var upvotes: Int = 0
     var comments = [Comment]()
     var distanceUnit: DistanceUnit
@@ -29,5 +29,6 @@ class Workout: Identifiable {
         self.username = "domchang"
         self.totalDistance = 0
         self.distanceUnit = .scy
+        self.caption = ""
     }
 }

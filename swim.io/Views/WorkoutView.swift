@@ -14,27 +14,33 @@ struct WorkoutView: View {
     var body: some View {
         Form {
             Text(workout.date)
-                .font(.largeTitle)
+                .font(.title)
                 .bold()
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding([.leading, .trailing, .top])
-            Section("Pool Type") {
-                Picker("Unit", selection: $workout.distanceUnit) {
-                    Text("Short Course Yards").tag(DistanceUnit.scy)
-                    Text("Long Course Meters").tag(DistanceUnit.lcm)
-                    Text("Short Course Meters").tag(DistanceUnit.scm)
+            Text(workout.username)
+                .font(.caption)
+                .foregroundColor(.secondary)
+            Section("Details") {
+                TextField("Caption: ", text: $workout.caption)
+                Picker("Pool Type", selection: $workout.distanceUnit) {
+                    Text("SCY").tag(DistanceUnit.scy)
+                    Text("LCM").tag(DistanceUnit.lcm)
+                    Text("SCM").tag(DistanceUnit.scm)
                 }
                 .pickerStyle(.segmented)
+                .padding()
+                
             }
 
             Section("Sets") {
                 ForEach(workout.sets) { set in
                     SetView(set: set)
+                        .padding()
                 }
 
                 HStack {
-                    Text("Add a new set")
-                    Button("Add", systemImage: "plus", action: addSight)
+                    Button("Add a new set", systemImage: "plus", action: addSight)
                 }
             }
         }

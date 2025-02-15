@@ -33,7 +33,9 @@ struct SetView: View {
         Section("Sections") {
             ForEach(set.setChunks) { chunk in
                 ChunkView(chunk: chunk)
+                    .padding()
             }
+            .padding()
 
             HStack {
                 Text("Add a new section")

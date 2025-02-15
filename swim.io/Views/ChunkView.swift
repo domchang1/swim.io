@@ -10,7 +10,7 @@ import SwiftUI
 struct ChunkView: View {
     @Bindable var chunk: SetChunk
     var body: some View {
-        Text("Section #\(chunk.number)")
+        Text("Section #\(chunk.chunkNum)")
         HStack{
             TextField("Repetitions", value: $chunk.number, format: .number)
                             .textFieldStyle(RoundedBorderTextFieldStyle())

@@ -6,15 +6,40 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct UserView: View {
-    @EnvironmentObject var viewModel: AppViewModel
+    @Environment(\.modelContext) var modelContext
+    @Query var workouts: [Workout]
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Form {
+            Section("User") {
+                Text("domchang")
+                    .font(.title)
+                    .bold()
+            }
+            Section("Workouts") {
+                List {
+                    ForEach(workouts) { workout in
+                        Text("Workout on \(workout.date)")
+                    }
+                    .onDelete(perform: deleteWorkout)
+                }
+            }
+        }
+    }
+    
+    func deleteWorkout(_ indexSet: IndexSet) {
+        withAnimation {
+            for index in indexSet {
+                let workout = workouts[index]
+                modelContext.delete(workout)
+            }
+        }
     }
 }
 
-#Preview {
-    UserView()
-        .environmentObject(AppViewModel())
-}
+//#Preview {
+//    UserView()
+//        .environmentObject(AppViewModel())
+//}

@@ -15,7 +15,7 @@ struct SwimView: View {
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
-            Section(header: Text("Quick Start")) {
+            Section("Quick Start") {
                 Button("Add Workout", systemImage: "plus", action: addWorkout)
             }
             .navigationDestination(for: Workout.self) { workout in

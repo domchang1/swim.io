@@ -45,7 +45,7 @@ struct ContentView: View {
                 SwimView()
             }
             Tab("Profile", systemImage: "person.crop.circle") {
-                HomeView()
+                UserView()
             }
         }
     }
