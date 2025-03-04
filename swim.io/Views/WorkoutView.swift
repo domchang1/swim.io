@@ -33,22 +33,22 @@ struct WorkoutView: View {
                 
             }
 
-            Section("Sets") {
-                ForEach(workout.sets) { set in
+            ForEach(workout.sets) { set in
+                Section("Set \(set.number)") {
                     SetView(set: set)
                         .padding()
                 }
+            }
 
-                HStack {
-                    Button("Add a new set", systemImage: "plus", action: addSight)
-                }
+            HStack {
+                Button("Add a new set", systemImage: "plus", action: addSet)
             }
         }
         .navigationTitle("Edit Workout")
         .navigationBarTitleDisplayMode(.inline)
     }
     
-    func addSight() {
+    func addSet() {
         withAnimation {
             let set = SwimSet(number: setNum)
             workout.sets.append(set)

@@ -10,20 +10,33 @@ import SwiftUI
 struct ChunkView: View {
     @Bindable var chunk: SetChunk
     var body: some View {
-        Text("Section #\(chunk.chunkNum)")
-        HStack{
-            TextField("Repetitions", value: $chunk.number, format: .number)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .keyboardType(.numberPad)
-            TextField("Distance", value: $chunk.distance, format: .number)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .keyboardType(.numberPad)
-            Picker("Stroke Type", selection: $chunk.setType) {
-                ForEach(SetType.allCases, id: \.self) { type in
-                    Text(type.description)
+        VStack{
+            Text("Section #\(chunk.chunkNum):")
+                .bold()
+            HStack {
+                TextField("", value: $chunk.number, format: .number)
+                    .keyboardType(.numberPad)
+                    .multilineTextAlignment(.center)
+                    .frame(width: 30)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    
+                Text("x")
+                    .font(.system(size: 16))
+                TextField("", value: $chunk.distance, format: .number)
+                    .keyboardType(.numberPad)
+                    .multilineTextAlignment(.center)
+                    .frame(width: 30)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                Spacer()
+                Picker("of", selection: $chunk.setType) {
+                    ForEach(SetType.allCases, id: \.self) { type in
+                        Text(type.description)
+                    }
                 }
+                .pickerStyle(.menu)
+                .layoutPriority(1) // Give higher layout priority
+                .frame(minWidth: 120, maxWidth: .infinity)
             }
-            .pickerStyle(.menu)
         }
     }
 }

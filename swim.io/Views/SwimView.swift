@@ -11,6 +11,7 @@ import SwiftData
 struct SwimView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var navigationPath = NavigationPath()
+    @Query private var workouts: [Workout]
     
     var body: some View {
        NavigationStack(path: $navigationPath) {
@@ -53,26 +54,16 @@ struct SwimView: View {
     func addWorkout() {
         let workout = Workout()
         modelContext.insert(workout)
+        do {
+            try modelContext.save()
+        } catch {
+            print("Failed to save new item: \(error)")
+        }
         navigationPath.append(workout)
     }
     
 }
 
-//    private func addItem() {
-//        withAnimation {
-//            let newItem = Item(timestamp: Date())
-//            modelContext.insert(newItem)
-//        }
-//    }
-//
-//    private func deleteItems(offsets: IndexSet) {
-//        withAnimation {
-//            for index in offsets {
-//                modelContext.delete(items[index])
-//            }
-//        }
-//    }
-//
 //#Preview {
 //    SwimView()
 //        .modelContainer(for: Workout.self, inMemory: true)

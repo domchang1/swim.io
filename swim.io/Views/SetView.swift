@@ -11,38 +11,42 @@ struct SetView: View {
     @Bindable var set: SwimSet
     @State var chunkNum: Int = 1
     var body: some View {
-        
-        Text("Set #\(set.number)")
-        HStack{
-            TextField("Focus", text: $set.mainFocus)
-            Slider(
-                value: Binding(
-                    get: { Double(set.rounds) },
-                    set: { set.rounds = Int($0) }
-                ),
-                in: 0...10,
-                step: 1
-            ) {
-                Text("Number of Rounds")
-            } minimumValueLabel: {
-                Text("0")
-            } maximumValueLabel: {
-                Text("10")
-            }
-        }
-        Section("Sections") {
-            ForEach(set.setChunks) { chunk in
-                ChunkView(chunk: chunk)
-                    .padding()
-            }
-            .padding()
-
+        VStack{
             HStack {
-                Text("Add a new section")
-                Button("Add", systemImage: "plus", action: addChunk)
+                Text("Main Focus: ")
+                    .font(.subheadline)
+                Spacer()
+                TextField("Freestyle", text: $set.mainFocus)
+                
+            }
+            HStack {
+                Text("Number of Rounds: ")
+                    .font(.subheadline)
+                Spacer()
+                Slider(
+                    value: Binding(
+                        get: { Double(set.rounds) },
+                        set: { set.rounds = Int($0) }
+                    ),
+                    in: 0...10,
+                    step: 1
+                ) {
+                    Text("Number of Rounds")
+                } minimumValueLabel: {
+                    Text("0")
+                } maximumValueLabel: {
+                    Text("10")
+                }
             }
         }
+        ForEach(set.setChunks) { chunk in
+            ChunkView(chunk: chunk)
+        }
+        .padding()
 
+        HStack {
+            Button("Add a new section", systemImage: "plus", action: addChunk)
+        }
     }
     
     func addChunk() {

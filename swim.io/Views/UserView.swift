@@ -11,7 +11,9 @@ import SwiftData
 struct UserView: View {
     @State private var navigationPath = NavigationPath()
     @Environment(\.modelContext) var modelContext
-    @Query var workouts: [Workout]
+    @Query(sort: \Workout.date, order: .reverse) var workouts: [Workout]
+    @State private var refresh = false
+    
     var body: some View {
         NavigationStack(path: $navigationPath) {
             Form {
@@ -38,6 +40,12 @@ struct UserView: View {
         }
         .navigationTitle("User Page")
         .navigationBarTitleDisplayMode(.large)
+        .refreshable {
+            refresh.toggle()
+        }
+        .onAppear {
+            refresh.toggle()
+        }
 //        .navigationDestination(for: Workout.self) { workout in
 //            WorkoutView(workout: workout)
 //        }
@@ -48,6 +56,11 @@ struct UserView: View {
             for index in indexSet {
                 let workout = workouts[index]
                 modelContext.delete(workout)
+            }
+            do {
+                try modelContext.save()
+            } catch {
+                print("Failed to save after deleting workout: \(error)")
             }
         }
     }
