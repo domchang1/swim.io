@@ -13,11 +13,10 @@ struct SetView: View {
     var body: some View {
         VStack{
             HStack {
-                Text("Main Focus: ")
+                Text("Main Focus:")
                     .font(.subheadline)
                 Spacer()
                 TextField("Freestyle", text: $set.mainFocus)
-                
             }
             HStack {
                 Text("Number of Rounds: ")

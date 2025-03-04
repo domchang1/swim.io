@@ -14,7 +14,13 @@ class Workout: Identifiable {
     var title: String
     var date: String
     var username: String
-    var totalDistance: Int
+    var totalDistance: Int {
+        var count = 0
+        for set in sets {
+            count += set.totalDistance
+        }
+        return count
+    }
     @Relationship(deleteRule: .cascade) var sets = [SwimSet]()
     var caption: String
     var upvotes: Int = 0
@@ -29,7 +35,6 @@ class Workout: Identifiable {
         self.date = formatter.string(from: currDate)
         self.title = "Workout on \(formatter.string(from: currDate))"
         self.username = "domchang"
-        self.totalDistance = 0
         self.distanceUnit = .scy
         self.caption = ""
     }

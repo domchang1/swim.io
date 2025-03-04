@@ -22,7 +22,6 @@ struct UserView: View {
                         .font(.title3)
                         .bold()
                     Text("Total Workouts: \(workouts.count)")
-                    Text("Total Distance: 0.0 mi")
                 }
                 Section("Workouts") {
                     List {

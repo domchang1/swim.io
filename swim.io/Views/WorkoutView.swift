@@ -19,6 +19,17 @@ struct WorkoutView: View {
                 .bold()
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding([.leading, .trailing, .top])
+            HStack {
+                Text("Total Distance: ")
+                    .font(.subheadline)
+                Spacer()
+                Text("\(workout.totalDistance)")
+                if workout.distanceUnit == .scy {
+                    Text("yards")
+                } else {
+                    Text("meters")
+                }
+            }
             Text(workout.username)
                 .font(.caption)
                 .foregroundColor(.secondary)
