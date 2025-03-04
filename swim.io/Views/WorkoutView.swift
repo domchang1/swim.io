@@ -13,8 +13,9 @@ struct WorkoutView: View {
     
     var body: some View {
         Form {
-            Text(workout.date)
-                .font(.title)
+            
+            TextField(workout.title, text: $workout.title)
+                .font(.title2)
                 .bold()
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding([.leading, .trailing, .top])
@@ -22,7 +23,10 @@ struct WorkoutView: View {
                 .font(.caption)
                 .foregroundColor(.secondary)
             Section("Details") {
-                TextField("Caption: ", text: $workout.caption)
+                HStack {
+                    Text("Caption:")
+                    TextField("Any additional notes", text: $workout.caption)
+                }
                 Picker("Pool Type", selection: $workout.distanceUnit) {
                     Text("SCY").tag(DistanceUnit.scy)
                     Text("LCM").tag(DistanceUnit.lcm)

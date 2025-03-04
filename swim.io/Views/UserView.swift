@@ -22,12 +22,13 @@ struct UserView: View {
                         .font(.title3)
                         .bold()
                     Text("Total Workouts: \(workouts.count)")
+                    Text("Total Distance: 0.0 mi")
                 }
                 Section("Workouts") {
                     List {
                         ForEach(workouts) { workout in
                             HStack {
-                                Text("Workout on \(workout.date)")
+                                Text("\(workout.title)")
                                 Spacer()
                                 Image(systemName: "chevron.right")
                                     .foregroundColor(.gray)
@@ -37,18 +38,15 @@ struct UserView: View {
                     }
                 }
             }
+            .navigationTitle("User Page")
+            .navigationBarTitleDisplayMode(.large)
+            .refreshable {
+                refresh.toggle()
+            }
+            .onAppear {
+                refresh.toggle()
+            }
         }
-        .navigationTitle("User Page")
-        .navigationBarTitleDisplayMode(.large)
-        .refreshable {
-            refresh.toggle()
-        }
-        .onAppear {
-            refresh.toggle()
-        }
-//        .navigationDestination(for: Workout.self) { workout in
-//            WorkoutView(workout: workout)
-//        }
     }
     
     func deleteWorkout(_ indexSet: IndexSet) {

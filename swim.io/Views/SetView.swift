@@ -23,30 +23,30 @@ struct SetView: View {
                 Text("Number of Rounds: ")
                     .font(.subheadline)
                 Spacer()
-                Slider(
-                    value: Binding(
-                        get: { Double(set.rounds) },
-                        set: { set.rounds = Int($0) }
-                    ),
-                    in: 0...10,
-                    step: 1
-                ) {
-                    Text("Number of Rounds")
-                } minimumValueLabel: {
-                    Text("0")
-                } maximumValueLabel: {
-                    Text("10")
+                VStack(spacing: 2) {
+                    Text("\(Int(set.rounds))")
+                        .font(.headline)
+                        .foregroundColor(.blue)
+                    Slider(
+                        value: Binding(
+                            get: { Double(set.rounds) },
+                            set: { set.rounds = Int($0) }
+                        ),
+                        in: 0...10,
+                        step: 1
+                    ) {
+                    } minimumValueLabel: {
+                        Text("0")
+                    } maximumValueLabel: {
+                        Text("10")
+                    }
                 }
             }
         }
         ForEach(set.setChunks) { chunk in
             ChunkView(chunk: chunk)
         }
-        .padding()
-
-        HStack {
-            Button("Add a new section", systemImage: "plus", action: addChunk)
-        }
+        Button("Add a new section", systemImage: "plus", action: addChunk)
     }
     
     func addChunk() {

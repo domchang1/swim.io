@@ -11,6 +11,7 @@ import SwiftData
 @Model
 class Workout: Identifiable {
     var id: String = UUID().uuidString
+    var title: String
     var date: String
     var username: String
     var totalDistance: Int
@@ -25,7 +26,8 @@ class Workout: Identifiable {
         let formatter = DateFormatter()
         formatter.timeStyle = .none
         formatter.dateStyle = .long
-        date = formatter.string(from: currDate)
+        self.date = formatter.string(from: currDate)
+        self.title = "Workout on \(formatter.string(from: currDate))"
         self.username = "domchang"
         self.totalDistance = 0
         self.distanceUnit = .scy

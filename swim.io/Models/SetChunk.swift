@@ -13,8 +13,9 @@ class SetChunk {
     var number: Int
     var distance: Int
     var setType: SetType
-    var interval: Int
-    var notes: String?
+    var minutes: Int
+    var seconds: Int
+    var notes: String
     var chunkNum: Int
     
     init(chunkNum: Int) {
@@ -22,6 +23,8 @@ class SetChunk {
         self.number = 0
         self.distance = 0
         self.setType = SetType.freestyle
-        self.interval = 0
+        self.minutes = 0
+        self.seconds = 0
+        self.notes = ""
     }
 }

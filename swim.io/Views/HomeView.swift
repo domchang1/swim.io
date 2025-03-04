@@ -6,15 +6,46 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct HomeView: View {
-    @EnvironmentObject var viewModel: AppViewModel
+    @State private var navigationPath = NavigationPath()
+    @Environment(\.modelContext) var modelContext
+    @Query(sort: \Workout.date, order: .reverse) var workouts: [Workout]
+    @State private var refresh = false
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack(path: $navigationPath) {
+            Form {
+                Section("Feed") {
+                    List {
+                        ForEach(workouts) { workout in
+                            Button(action: {
+                                navigationPath.append(workout)
+                            }) {
+                                Text("\(workout.title)")
+                                    .foregroundColor(.primary)
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Home Page")
+            .navigationBarTitleDisplayMode(.large)
+            .navigationDestination(for: Workout.self) { workout in
+                WorkoutView(workout: workout)
+            }
+            .refreshable {
+                refresh.toggle()
+            }
+            .onAppear {
+                refresh.toggle()
+            }
+        }
     }
 }
-
-#Preview {
-    HomeView()
-        .environmentObject(AppViewModel())
-}
+//
+//#Preview {
+//    HomeView()
+//        .environmentObject(AppViewModel())
+//}
