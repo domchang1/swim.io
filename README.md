@@ -7,6 +7,7 @@
   - Put in yardage and intervals, automatically calculating total yardage and in pool time
   - Show off workouts and progress through home page feature
 - See how you have progressed over the course of many swim workouts
+- Talk to LaneMate, a smart AI swim coach who can assist you on anything swim related
 
 ## Resources Used
 - SwiftUI and Swift
