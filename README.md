@@ -11,5 +11,7 @@
 ## Resources Used
 - SwiftUI and Swift
 - SwiftData for data storage
+- Flask for backend
+- Hugging Face for Microsoft's Phi-3-mini-4k-instruct Large Language Model
 - Apple/Swift Documentation
 - Inspired by the Hevy app!

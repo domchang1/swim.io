@@ -11,35 +11,13 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var viewModel: AppViewModel
+    @EnvironmentObject var chatViewModel: ChatViewModel
 
     var body: some View {
-//        NavigationSplitView {
-//            List {
-//                ForEach(items) { item in
-//                    NavigationLink {
-//                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-//                    } label: {
-//                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-//                    }
-//                }
-//                .onDelete(perform: deleteItems)
-//            }
-//            .toolbar {
-//                ToolbarItem(placement: .navigationBarTrailing) {
-//                    EditButton()
-//                }
-//                ToolbarItem {
-//                    Button(action: addItem) {
-//                        Label("Add Item", systemImage: "plus")
-//                    }
-//                }
-//            }
-//        } detail: {
-//            Text("Select an item")
-//        }
         TabView () {
             Tab("Home", systemImage: "house") {
                 HomeView()
+                    .environmentObject(chatViewModel)
             }
             Tab("Swim", systemImage: "figure.pool.swim") {
                 SwimView()
@@ -64,7 +42,7 @@ struct ContentView_Previews: PreviewProvider {
 }
 #endif
 
-#Preview {
-    ContentView()
-        .environmentObject(AppViewModel())
-}
+//#Preview {
+//    ContentView()
+//        .environmentObject(AppViewModel())
+//}
