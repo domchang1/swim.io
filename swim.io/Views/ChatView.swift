@@ -55,9 +55,10 @@ struct ChatView: View {
                 }
 
                 HStack {
-                    TextField("Type your message...", text: $currentInput)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .frame(minHeight: 44)
+                    TextField("Type your message...", text: $currentInput, axis: .vertical)
+                        .padding(.vertical, 10)
+                        .padding(.leading, 16)
+                        .foregroundColor(.primary)
 
                     Button(action: {
                         guard !currentInput.trimmingCharacters(in: .whitespaces).isEmpty else { return }
@@ -65,11 +66,20 @@ struct ChatView: View {
                         currentInput = ""
                     }) {
                         Image(systemName:"paperplane.fill")
+                            .foregroundColor(.white)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 16) 
+                            .background(Color.accentColor)
+                            .clipShape(Capsule())
                     }
+                    .padding(.trailing, 8)
                 }
-                .padding()
+                .background(Color(uiColor: .secondarySystemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
+                .padding(.horizontal)
+                .padding(.vertical, 8)
             }
-            .navigationTitle("Talk to LaneMate")
+            .navigationTitle("Chat with LaneMate")
             .navigationBarItems(trailing:
                                     HStack {
                 Button("Close") {
