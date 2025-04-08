@@ -20,18 +20,7 @@ struct HomeView: View {
         NavigationStack(path: $navigationPath) {
             ZStack {
                 Form {
-                    Section("Feed") {
-                        List {
-                            ForEach(workouts) { workout in
-                                Button(action: {
-                                    navigationPath.append(workout)
-                                }) {
-                                    Text("\(workout.title)")
-                                        .foregroundColor(.primary)
-                                }
-                            }
-                        }
-                    }
+                    workoutListView
                 }
                 .navigationTitle("Home Page")
                 .navigationBarTitleDisplayMode(.large)
@@ -74,9 +63,14 @@ struct HomeView: View {
             }
         }
     }
+    
+    var workoutListView: some View {
+        Section("Feed") {
+            List {
+                ForEach(workouts) { workout in
+                    WorkoutRowView(workout: workout, navigationPath: $navigationPath)
+                }
+            }
+        }
+    }
 }
-//
-//#Preview {
-//    HomeView()
-//        .environmentObject(AppViewModel())
-//}

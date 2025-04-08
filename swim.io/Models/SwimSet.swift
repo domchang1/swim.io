@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class SwimSet: ObservableObject {
+class SwimSet: ObservableObject, Identifiable, Hashable {
     var number: Int
     var rounds: Int
     @Relationship(deleteRule: .cascade) var setChunks = [SetChunk]()
