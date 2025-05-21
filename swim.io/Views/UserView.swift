@@ -26,11 +26,15 @@ struct UserView: View {
                 Section("Workouts") {
                     List {
                         ForEach(workouts) { workout in
-                            HStack {
-                                Text("\(workout.title)")
-                                Spacer()
-                                Image(systemName: "chevron.right")
-                                    .foregroundColor(.gray)
+                            Button(action: {
+                                navigationPath.append(workout)
+                            }) {
+                                HStack {
+                                    Text("\(workout.title)")
+                                    Spacer()
+                                    Image(systemName: "chevron.right")
+                                        .foregroundColor(.gray)
+                                }
                             }
                         }
                         .onDelete(perform: deleteWorkout)
@@ -39,6 +43,9 @@ struct UserView: View {
             }
             .navigationTitle("User Page")
             .navigationBarTitleDisplayMode(.large)
+            .navigationDestination(for: Workout.self) { workout in
+                WorkoutView(workout: workout)
+            }
             .refreshable {
                 refresh.toggle()
             }

@@ -34,10 +34,21 @@ struct WorkoutView: View {
                 .font(.caption)
                 .foregroundColor(.secondary)
             Section("Details") {
-                HStack {
-                    Text("Caption:")
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Caption")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                    
                     TextField("Any additional notes", text: $workout.caption)
+                        .padding(10)
+                        .background(Color(.systemGray6))
+                        .cornerRadius(8)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color(.systemGray4), lineWidth: 1)
+                        )
                 }
+                .padding(.vertical, 4)
                 Picker("Pool Type", selection: $workout.distanceUnit) {
                     Text("SCY").tag(DistanceUnit.scy)
                     Text("LCM").tag(DistanceUnit.lcm)
@@ -55,9 +66,30 @@ struct WorkoutView: View {
                 }
             }
 
-            HStack {
-                Button("Add a new set", systemImage: "plus", action: addSet)
+            ZStack {
+                // Remove default Form section background
+                Color.clear
+                    .listRowBackground(Color.clear)
+                
+                Button(action: addSet) {
+                    HStack {
+                        Image(systemName: "plus.circle.fill")
+                        Text("Add a new set")
+                    }
+                    .font(.body)
+                    .fontWeight(.medium)
+                    .foregroundColor(.blue)
+                    .padding(.vertical, 12)
+                    .padding(.horizontal, 16)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.blue.opacity(0.1))
+                    .cornerRadius(10)
+                }
+                .buttonStyle(PlainButtonStyle())
+                .padding(.horizontal, 4)
             }
+            .listRowInsets(EdgeInsets())
+            .listRowBackground(Color.clear)
         }
         .navigationTitle("Edit Workout")
         .navigationBarTitleDisplayMode(.inline)
