@@ -9,10 +9,12 @@ import SwiftUI
 import SwiftData
 
 struct UserView: View {
+    @EnvironmentObject var authViewModel: AuthViewModel
     @State private var navigationPath = NavigationPath()
     @Environment(\.modelContext) var modelContext
     @Query(sort: \Workout.date, order: .reverse) var workouts: [Workout]
     @State private var refresh = false
+    @State private var showingSignOutAlert = false
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
@@ -21,6 +23,18 @@ struct UserView: View {
                     Text("domchang")
                         .font(.title3)
                         .bold()
+                    Button {
+                        showingSignOutAlert = true
+                    } label: {
+                        Text("Sign Out")
+                            .foregroundColor(.white)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.red)
+                            .cornerRadius(10)
+                            .padding(.horizontal)
+                    }
+                    .padding(.top, 30)
                     Text("Total Workouts: \(workouts.count)")
                 }
                 Section("Workouts") {
@@ -40,6 +54,18 @@ struct UserView: View {
                         .onDelete(perform: deleteWorkout)
                     }
                 }
+            }
+            .alert(isPresented: $showingSignOutAlert) {
+                Alert(
+                    title: Text("Sign Out"),
+                    message: Text("Are you sure you want to sign out?"),
+                    primaryButton: .destructive(Text("Sign Out")) {
+                        if authViewModel.signOut() {
+                            // Successfully signed out
+                        }
+                    },
+                    secondaryButton: .cancel()
+                )
             }
             .navigationTitle("User Page")
             .navigationBarTitleDisplayMode(.large)

@@ -10,10 +10,21 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
+    @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var viewModel: AppViewModel
     @EnvironmentObject var chatViewModel: ChatViewModel
 
     var body: some View {
+        Group {
+            if authViewModel.isAuthenticated {
+                mainView
+            } else {
+                AuthView()
+            }
+        }
+    }
+    
+    var mainView: some View {
         TabView () {
             Tab("Home", systemImage: "house") {
                 HomeView()
@@ -24,6 +35,7 @@ struct ContentView: View {
             }
             Tab("Profile", systemImage: "person.crop.circle") {
                 UserView()
+                    .environmentObject(authViewModel)
             }
         }
     }
@@ -42,7 +54,3 @@ struct ContentView_Previews: PreviewProvider {
 }
 #endif
 
-//#Preview {
-//    ContentView()
-//        .environmentObject(AppViewModel())
-//}
