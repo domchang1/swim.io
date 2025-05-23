@@ -22,6 +22,12 @@ struct ContentView: View {
                 AuthView()
             }
         }
+        .onAppear {
+            authViewModel.setModelContext(modelContext)
+        }
+        .onChange(of: modelContext) { _, newContext in
+            authViewModel.setModelContext(newContext)
+        }
     }
     
     var mainView: some View {

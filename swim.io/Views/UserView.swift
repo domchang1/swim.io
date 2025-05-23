@@ -60,9 +60,7 @@ struct UserView: View {
                     title: Text("Sign Out"),
                     message: Text("Are you sure you want to sign out?"),
                     primaryButton: .destructive(Text("Sign Out")) {
-                        if authViewModel.signOut() {
-                            // Successfully signed out
-                        }
+                        authViewModel.signOut() 
                     },
                     secondaryButton: .cancel()
                 )

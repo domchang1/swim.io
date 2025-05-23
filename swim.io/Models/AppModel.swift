@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftData
 
 enum SetType: String, Codable, CaseIterable {
     case butterfly
@@ -43,4 +44,23 @@ enum DistanceUnit: String, Codable {
     case scm
     case scy
     case lcm
+}
+
+@Model
+class AppUser {
+    var email: String
+    var passwordHash: String
+    var id: String
+    var createdDate: Date
+    var firstName: String?
+    var lastName: String?
+    
+    init(email: String, passwordHash: String, firstName: String? = nil, lastName: String? = nil) {
+        self.email = email
+        self.passwordHash = passwordHash
+        self.id = UUID().uuidString
+        self.createdDate = Date()
+        self.firstName = firstName
+        self.lastName = lastName
+    }
 }
