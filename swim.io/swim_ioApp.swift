@@ -15,7 +15,7 @@ struct swim_ioApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(AppViewModel())
+            ContentView()
                 .environmentObject(chatViewModel)
                 .environmentObject(authViewModel)
         }

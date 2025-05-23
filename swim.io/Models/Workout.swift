@@ -13,7 +13,6 @@ class Workout: Identifiable {
     var id: String = UUID().uuidString
     var title: String
     var date: String
-    var username: String
     var totalDistance: Int {
         var count = 0
         for set in sets {
@@ -21,21 +20,22 @@ class Workout: Identifiable {
         }
         return count
     }
+    var user: AppUser
     @Relationship(deleteRule: .cascade) var sets = [SwimSet]()
     var caption: String
     var upvotes: Int = 0
     var comments = [Comment]()
     var distanceUnit: DistanceUnit
     
-    init() {
+    init(user: AppUser) {
         let currDate = Date()
         let formatter = DateFormatter()
         formatter.timeStyle = .none
         formatter.dateStyle = .long
         self.date = formatter.string(from: currDate)
         self.title = "Workout on \(formatter.string(from: currDate))"
-        self.username = "domchang"
         self.distanceUnit = .scy
         self.caption = ""
+        self.user = user
     }
 }

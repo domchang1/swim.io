@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct WorkoutRowView: View {
+    @EnvironmentObject var authViewModel: AuthViewModel
     @State var workout: Workout
     @Environment(\.modelContext) var modelContext
     @Binding var navigationPath: NavigationPath
@@ -24,7 +25,7 @@ struct WorkoutRowView: View {
             // Top bar
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(workout.username)
+                    Text(workout.user.username!)
                         .font(.subheadline)
                         .bold()
                     Text(workout.date)

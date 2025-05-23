@@ -7,10 +7,8 @@
 import SwiftUI
 
 struct AuthView: View {
-    @State private var email = ""
+    @State private var username = ""
     @State private var password = ""
-    @State private var firstName = ""
-    @State private var lastName = ""
     @State private var isSignUp = false
     @State private var errorMessage = ""
     @State private var showingError = false
@@ -34,7 +32,7 @@ struct AuthView: View {
                             .font(.largeTitle)
                             .fontWeight(.bold)
                         
-                        Text(isSignUp ? "Create your account" : "Welcome back")
+                        Text(isSignUp ? "Create your account" : "Welcome back!")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
@@ -42,18 +40,9 @@ struct AuthView: View {
                     
                     // Form fields
                     VStack(spacing: 16) {
-                        if isSignUp {
-                            HStack(spacing: 12) {
-                                TextField("First Name", text: $firstName)
-                                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                                
-                                TextField("Last Name", text: $lastName)
-                                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                            }
-                        }
                         
-                        TextField("Email", text: $email)
-                            .keyboardType(.emailAddress)
+                        TextField("Username", text: $username)
+                            .keyboardType(.default)
                             .autocapitalization(.none)
                             .disableAutocorrection(true)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -78,12 +67,12 @@ struct AuthView: View {
                     .frame(maxWidth: .infinity)
                     .padding()
                     .background(
-                        (email.isEmpty || password.isEmpty) ? Color.gray : Color.blue
+                        (username.isEmpty || password.isEmpty) ? Color.gray : Color.blue
                     )
                     .foregroundColor(.white)
                     .cornerRadius(12)
                     .padding(.horizontal)
-                    .disabled(email.isEmpty || password.isEmpty || isLoading)
+                    .disabled(username.isEmpty || password.isEmpty || isLoading)
                     
                     // Toggle sign in/up
                     Button {
@@ -115,10 +104,8 @@ struct AuthView: View {
         
         if isSignUp {
             authViewModel.signUp(
-                email: email,
-                password: password,
-                firstName: firstName.isEmpty ? nil : firstName,
-                lastName: lastName.isEmpty ? nil : lastName
+                username: username,
+                password: password
             ) { success, error in
                 isLoading = false
                 if !success, let error = error {
@@ -127,7 +114,7 @@ struct AuthView: View {
                 }
             }
         } else {
-            authViewModel.signIn(email: email, password: password) { success, error in
+            authViewModel.signIn(username: username, password: password) { success, error in
                 isLoading = false
                 if !success, let error = error {
                     errorMessage = error
@@ -138,10 +125,8 @@ struct AuthView: View {
     }
     
     private func clearFields() {
-        email = ""
+        username = ""
         password = ""
-        firstName = ""
-        lastName = ""
         errorMessage = ""
     }
 }

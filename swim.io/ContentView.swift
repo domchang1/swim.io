@@ -11,7 +11,6 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var authViewModel: AuthViewModel
-    @EnvironmentObject var viewModel: AppViewModel
     @EnvironmentObject var chatViewModel: ChatViewModel
 
     var body: some View {
@@ -35,9 +34,12 @@ struct ContentView: View {
             Tab("Home", systemImage: "house") {
                 HomeView()
                     .environmentObject(chatViewModel)
+                    .environmentObject(authViewModel)
             }
             Tab("Swim", systemImage: "figure.pool.swim") {
                 SwimView()
+                    .environmentObject(chatViewModel)
+                    .environmentObject(authViewModel)
             }
             Tab("Profile", systemImage: "person.crop.circle") {
                 UserView()

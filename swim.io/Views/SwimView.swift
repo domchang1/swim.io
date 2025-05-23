@@ -9,6 +9,8 @@ import SwiftUI
 import SwiftData
 
 struct SwimView: View {
+    @EnvironmentObject var authViewModel: AuthViewModel
+    @EnvironmentObject var chatViewModel: ChatViewModel
     @Environment(\.modelContext) private var modelContext
     @State private var navigationPath = NavigationPath()
     @Query private var workouts: [Workout]
@@ -46,13 +48,17 @@ struct SwimView: View {
            .navigationTitle("Swim Workouts")
            .navigationBarTitleDisplayMode(.large)
            .navigationDestination(for: Workout.self) { workout in
-               WorkoutView(workout: workout)
+               withAnimation {
+                   WorkoutView(workout: workout)
+                       .environmentObject(chatViewModel)
+                       .environmentObject(authViewModel)
+               }
            }
         }
     }
     
     func addWorkout() {
-        let workout = Workout()
+        let workout = Workout(user: authViewModel.currentUser!)
         modelContext.insert(workout)
         do {
             try modelContext.save()

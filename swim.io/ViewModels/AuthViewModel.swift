@@ -45,17 +45,17 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-    func signUp(email: String, password: String, firstName: String?, lastName: String?, completion: @escaping (Bool, String?) -> Void) {
+    func signUp(username: String, password: String, completion: @escaping (Bool, String?) -> Void) {
         guard let context = modelContext else {
             completion(false, "Database not available")
             return
         }
         
-        // Validate email format
-        guard email.contains("@") && email.contains(".") else {
-            completion(false, "Please enter a valid email address")
-            return
-        }
+//        // Validate email format
+//        guard email.contains("@") && email.contains(".") else {
+//            completion(false, "Please enter a valid email address")
+//            return
+//        }
         
         // Validate password
         guard password.count >= 6 else {
@@ -65,7 +65,7 @@ class AuthViewModel: ObservableObject {
         
         // Check if user already exists
         let fetchDescriptor = FetchDescriptor<AppUser>(
-            predicate: #Predicate { $0.email == email }
+            predicate: #Predicate { $0.username == username }
         )
         
         do {
@@ -77,7 +77,7 @@ class AuthViewModel: ObservableObject {
             
             // Create new user
             let passwordHash = hashPassword(password)
-            let newUser = AppUser(email: email, passwordHash: passwordHash, firstName: firstName, lastName: lastName)
+            let newUser = AppUser(passwordHash: passwordHash, username: username)
             context.insert(newUser)
             try context.save()
             
@@ -92,14 +92,14 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-    func signIn(email: String, password: String, completion: @escaping (Bool, String?) -> Void) {
+    func signIn(username: String, password: String, completion: @escaping (Bool, String?) -> Void) {
         guard let context = modelContext else {
             completion(false, "Database not available")
             return
         }
         
         let fetchDescriptor = FetchDescriptor<AppUser>(
-            predicate: #Predicate { $0.email == email }
+            predicate: #Predicate { $0.username == username }
         )
         
         do {

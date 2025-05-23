@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct HomeView: View {
+    @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var chatViewModel: ChatViewModel
     @State private var navigationPath = NavigationPath()
     @Environment(\.modelContext) var modelContext
@@ -25,7 +26,7 @@ struct HomeView: View {
                 .navigationTitle("Home Page")
                 .navigationBarTitleDisplayMode(.large)
                 .navigationDestination(for: Workout.self) { workout in
-                    WorkoutView(workout: workout)
+                    WorkoutView(workout: workout).environmentObject(authViewModel)
                 }
                 .refreshable {
                     refresh.toggle()
@@ -68,7 +69,7 @@ struct HomeView: View {
         Section("Feed") {
             List {
                 ForEach(workouts) { workout in
-                    WorkoutRowView(workout: workout, navigationPath: $navigationPath)
+                    WorkoutRowView(workout: workout, navigationPath: $navigationPath).environmentObject(authViewModel)
                 }
             }
         }

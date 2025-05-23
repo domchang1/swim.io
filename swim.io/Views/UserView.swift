@@ -18,63 +18,94 @@ struct UserView: View {
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
-            Form {
-                Section("User") {
-                    Text("domchang")
-                        .font(.title3)
-                        .bold()
-                    Button {
-                        showingSignOutAlert = true
-                    } label: {
-                        Text("Sign Out")
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.red)
-                            .cornerRadius(10)
-                            .padding(.horizontal)
+            if let currentUser = authViewModel.currentUser {
+                Form {
+                    Section("User") {
+                        Text(currentUser.username!)
+                            .font(.title3)
+                            .bold()
+                        Text("Total Workouts: \(userWorkouts.count)")
+                        Button {
+                            showingSignOutAlert = true
+                        } label: {
+                            Text("Sign Out")
+                                .foregroundColor(.white)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color.red)
+                                .cornerRadius(10)
+                                .padding(.horizontal)
+                        }
+
                     }
-                    .padding(.top, 30)
-                    Text("Total Workouts: \(workouts.count)")
-                }
-                Section("Workouts") {
-                    List {
-                        ForEach(workouts) { workout in
-                            Button(action: {
-                                navigationPath.append(workout)
-                            }) {
-                                HStack {
-                                    Text("\(workout.title)")
-                                    Spacer()
-                                    Image(systemName: "chevron.right")
-                                        .foregroundColor(.gray)
+                    Section("Workouts") {
+                        if userWorkouts.isEmpty {
+                            Text("No workouts yet")
+                                .foregroundColor(.secondary)
+                                .italic()
+                        } else {
+                            List {
+                                ForEach(workouts) { workout in
+                                    if workout.user.username == currentUser.username! {
+                                        Button(action: {
+                                            navigationPath.append(workout)
+                                        }) {
+                                            HStack {
+                                                Text("\(workout.title)")
+                                                Spacer()
+                                                Image(systemName: "chevron.right")
+                                                    .foregroundColor(.gray)
+                                            }
+                                        }
+                                    }
                                 }
+                                .onDelete(perform: deleteWorkout)
                             }
                         }
-                        .onDelete(perform: deleteWorkout)
                     }
                 }
+                .alert(isPresented: $showingSignOutAlert) {
+                    Alert(
+                        title: Text("Sign Out"),
+                        message: Text("Are you sure you want to sign out?"),
+                        primaryButton: .destructive(Text("Sign Out")) {
+                            authViewModel.signOut()
+                        },
+                        secondaryButton: .cancel()
+                    )
+                }
+                .navigationTitle("User Page")
+                .navigationBarTitleDisplayMode(.large)
+                .navigationDestination(for: Workout.self) { workout in
+                    WorkoutView(workout: workout)
+                }
+                .refreshable {
+                    refresh.toggle()
+                }
+                .onAppear {
+                    refresh.toggle()
+                }
+            } else {
+                VStack {
+                    Text("Loading user information...")
+                    ProgressView()
+                }
+                .onAppear {
+                    // If we somehow get here without a user, sign them out
+                    authViewModel.signOut()
+                }
             }
-            .alert(isPresented: $showingSignOutAlert) {
-                Alert(
-                    title: Text("Sign Out"),
-                    message: Text("Are you sure you want to sign out?"),
-                    primaryButton: .destructive(Text("Sign Out")) {
-                        authViewModel.signOut() 
-                    },
-                    secondaryButton: .cancel()
-                )
-            }
-            .navigationTitle("User Page")
-            .navigationBarTitleDisplayMode(.large)
-            .navigationDestination(for: Workout.self) { workout in
-                WorkoutView(workout: workout)
-            }
-            .refreshable {
-                refresh.toggle()
-            }
-            .onAppear {
-                refresh.toggle()
+            
+        }
+        
+        var userWorkouts: [Workout] {
+            guard let currentUser = authViewModel.currentUser else { return [] }
+            
+            // Filter workouts based on user ID instead of username
+            return workouts.filter { workout in
+                // Assuming your Workout model has a way to identify the user
+                // You might need to adjust this based on your Workout model structure
+                workout.user.id == currentUser.id
             }
         }
     }
