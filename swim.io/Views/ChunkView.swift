@@ -21,12 +21,12 @@ struct ChunkView: View {
                 
                 Spacer()
                 
-                if isCreator {
-                    Button(action: { /* delete action */ }) {
-                        Image(systemName: "trash")
-                            .foregroundColor(.red)
-                    }
-                }
+//                if isCreator {
+//                    Button(action: { /* delete action */ }) {
+//                        Image(systemName: "trash")
+//                            .foregroundColor(.red)
+//                    }
+//                }
             }
             
             HStack(alignment: .bottom, spacing: 8) {

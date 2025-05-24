@@ -44,23 +44,23 @@ struct WorkoutRowView: View {
             }
             .padding(.bottom, 4)
             
-            // Title and caption - Using TapGesture instead of Button
-            VStack(alignment: .leading, spacing: 12) {  // Increased spacing between elements
+          
+            VStack(alignment: .leading, spacing: 12) {
                 Text(workout.title)
                     .font(.headline)
                     .lineLimit(2)
-                    .fixedSize(horizontal: false, vertical: true)  // Allow proper text wrapping
+                    .fixedSize(horizontal: false, vertical: true)
                 
                 if !workout.caption.isEmpty {
                     Text(workout.caption)
                         .font(.caption)
                         .foregroundColor(.secondary)
                         .lineLimit(3)
-                        .fixedSize(horizontal: false, vertical: true)  // Allow proper text wrapping
-                        .padding(.top, 2)  // Add a bit more space after the title
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.top, 2)
                 }
                 
-                // Pool type and total distance - improved spacing and style
+             
                 HStack(spacing: 12) {
                     Text(workout.distanceUnit.rawValue.uppercased())
                         .font(.caption)
@@ -78,17 +78,17 @@ struct WorkoutRowView: View {
                 }
                 .padding(.top, 4)
                 
-                // Swim sets with better spacing
+                
                 VStack(alignment: .leading, spacing: 8) {
                     swimSets
                 }
                 .padding(.top, 6)
             }
-            .padding(.vertical, 8)  // Add padding within the tappable area
-            .frame(maxWidth: .infinity, alignment: .leading)  // Ensure full width while keeping left alignment
-            .background(Color(.systemGray6).opacity(0.3))  // Subtle background to define the clickable area
-            .cornerRadius(8)  // Rounded corners for the content area
-            .contentShape(Rectangle())  // Important: defines the tappable area
+            .padding(.vertical, 8)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color(.systemGray6).opacity(0.3))
+            .cornerRadius(8)
+            .contentShape(Rectangle())
             .onTapGesture {
                 navigationPath.append(workout)
             }
@@ -96,60 +96,94 @@ struct WorkoutRowView: View {
             Divider()
                 .padding(.vertical, 8)
             
-            // Interaction buttons - Using separate ZStacks with tap gestures
-            HStack {
-                Spacer()
-                
+
+            HStack(spacing: 0) {
                 // Like button
-                ZStack {
-                    Rectangle()
-                        .fill(Color.clear)
-                        .frame(width: 60, height: 44)
+                HStack {
+                    Spacer()
+                    VStack(spacing: 2) {
+                        Image(systemName: liked ? "hand.thumbsup.fill" : "hand.thumbsup")
+                            .foregroundColor(.blue)
+                            .font(.system(size: 16))
                         
-                    if liked {
-                        Label("\(workout.upvotes)", systemImage: "hand.thumbsup.fill")  // Added count label
+                        Text("\(workout.upvotes)")
+                            .font(.caption2)
                             .foregroundColor(.blue)
-                            .font(.caption)
-                    } else {
-                        Label("\(workout.upvotes)", systemImage: "hand.thumbsup")  // Added count label
-                            .foregroundColor(.blue)
-                            .font(.caption)
                     }
-                }
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    liked = !liked
-                    if liked {
-                        workout.upvotes += 1
-                    } else {
-                        workout.upvotes -= 1
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 44)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        liked = !liked
+                        if liked {
+                            workout.upvotes += 1
+                        } else {
+                            workout.upvotes -= 1
+                        }
                     }
+                    Spacer()
                 }
                 
-                Spacer()
+               //Divider
+                Rectangle()
+                    .fill(Color.blue.opacity(0.2))
+                    .frame(width: 1, height: 24)
                 
                 // Comment button
-                ZStack {
-                    Rectangle()
-                        .fill(Color.clear)
-                        .frame(width: 60, height: 44)
+                HStack {
+                    Spacer()
+                    VStack(spacing: 2) {
+                        Image(systemName: "bubble.right")
+                            .foregroundColor(.blue)
+                            .font(.system(size: 16))
                         
-                    Label("", systemImage: "bubble.right")
-                        .foregroundColor(.blue)
-                        .font(.caption)
-                }
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    // Your comment action
+                        Text("")
+                            .font(.caption2)
+                            .foregroundColor(.blue)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 44)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        // Add actual action
+                        print("Comment button tapped")
+                    }
+                    Spacer()
                 }
                 
-                Spacer()
+                // Second blue divider
+                Rectangle()
+                    .fill(Color.blue.opacity(0.2))
+                    .frame(width: 1, height: 24)
+                
+                // Share button
+                HStack {
+                    Spacer()
+                    VStack(spacing: 2) {
+                        Image(systemName: "square.and.arrow.up")
+                            .foregroundColor(.blue)
+                            .font(.system(size: 16))
+                        
+                        Text("")
+                            .font(.caption2)
+                            .foregroundColor(.blue)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 44)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        //Add share functionality
+                        print("Share button tapped")
+                    }
+                    Spacer()
+                }
             }
+            .frame(height: 44)
         }
-        .padding(16)  // Increased overall padding
+        .padding(16)
         .background(Color(.systemBackground))
         .cornerRadius(12)
-        .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)  // Subtle shadow for depth
+        .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
     }
     
     var swimSets: some View {
@@ -181,7 +215,3 @@ struct WorkoutRowView: View {
         }
     }
 }
-
-//#Preview {
-//    WorkoutRowView()
-//}
