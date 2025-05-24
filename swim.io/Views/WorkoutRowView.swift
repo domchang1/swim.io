@@ -34,7 +34,7 @@ struct WorkoutRowView: View {
                 }
                 Spacer()
                 Menu {
-                    Button("Edit", action: { /* TODO */ })
+//                    Button("Edit", action: { /* TODO */ })
                     Button("Delete", role: .destructive, action: deleteWorkout)
                 } label: {
                     Image(systemName: "ellipsis")

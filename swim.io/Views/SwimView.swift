@@ -33,7 +33,7 @@ struct SwimView: View {
                
                Section {
                    NavigationLink {
-                       Text("Random Set View")  // Replace with  actual view
+                       Text("Coming soon...")  // Replace with  actual view
                    } label: {
                        HStack {
                            Text("Generate Random Set")

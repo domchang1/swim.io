@@ -17,15 +17,64 @@ struct WorkoutView: View {
     @State private var showingDeleteAlert = false
     @State private var navigateToHome = false
     @State private var isDeleting = false
+    private var isCreator: Bool {
+        guard let currentUser = authViewModel.currentUser else { return false }
+        return currentUser.username == workout.user.username
+    }
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
+            // Custom header with conditional back button
+            if !isCreator {
+                HStack {
+                    Button(action: {
+                        dismiss()
+                    }) {
+                        HStack {
+                            Image(systemName: "chevron.left")
+                            Text("Back")
+                        }
+                        .foregroundColor(.blue)
+                    }
+                    
+                    Spacer()
+                    
+                    Text("View Workout")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                    
+                    Spacer()
+                    
+                    // Empty space to balance the back button
+                    HStack {
+                        Image(systemName: "chevron.left")
+                        Text("Back")
+                    }
+                    .opacity(0) // Invisible but takes up space
+                }
+                .padding()
+                .background(Color(.systemBackground))
+                .shadow(color: .black.opacity(0.1), radius: 1, x: 0, y: 1)
+            } else {
+                HStack {
+                    Spacer()
+                    Text("Edit Workout")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                    Spacer()
+                }
+                .padding()
+                .background(Color(.systemBackground))
+                .shadow(color: .black.opacity(0.1), radius: 1, x: 0, y: 1)
+            }
+            
             Form {
                 TextField(workout.title, text: $workout.title)
                     .font(.title2)
                     .bold()
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding([.leading, .trailing, .top])
+                    .disabled(!isCreator)
                 
                 HStack {
                     Text("Total Distance: ")
@@ -57,6 +106,7 @@ struct WorkoutView: View {
                                 RoundedRectangle(cornerRadius: 8)
                                     .stroke(Color(.systemGray4), lineWidth: 1)
                             )
+                            .disabled(!isCreator)
                     }
                     .padding(.vertical, 4)
                     
@@ -67,11 +117,12 @@ struct WorkoutView: View {
                     }
                     .pickerStyle(.segmented)
                     .padding()
+                    .disabled(!isCreator)
                 }
 
                 ForEach(workout.sets) { set in
                     Section("Set \(set.number)") {
-                        SetView(set: set)
+                        SetView(set: set, isCreator: isCreator)
                             .padding()
                     }
                 }
@@ -96,56 +147,59 @@ struct WorkoutView: View {
                     }
                     .buttonStyle(PlainButtonStyle())
                     .padding(.horizontal, 4)
+                    .disabled(!isCreator)
                 }
                 .listRowInsets(EdgeInsets())
                 .listRowBackground(Color.clear)
                 
             }
-            .navigationTitle("Edit Workout")
+            //.navigationTitle("Edit Workout")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
         }
         // Bottom buttons section
-        Section {
-            HStack() {
-                Button(action: saveWorkout) {
-                    HStack {
-                        Image(systemName: "checkmark.circle.fill")
-                        Text("Save")
+        if isCreator {
+            Section {
+                HStack() {
+                    Button(action: saveWorkout) {
+                        HStack {
+                            Image(systemName: "checkmark.circle.fill")
+                            Text("Save")
+                        }
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.green)
+                        .cornerRadius(12)
                     }
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.green)
-                    .cornerRadius(12)
-                }
-                
-                Button(action: { showingDeleteAlert = true }) {
-                    HStack {
-                        Image(systemName: "trash.fill")
-                        Text("Delete")
+                    
+                    Button(action: { showingDeleteAlert = true }) {
+                        HStack {
+                            Image(systemName: "trash.fill")
+                            Text("Delete")
+                        }
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.red)
+                        .cornerRadius(12)
                     }
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.red)
-                    .cornerRadius(12)
                 }
+                .padding(.vertical, 8)
             }
-            .padding(.vertical, 8)
-        }
-        .listRowBackground(Color.clear)
-        .confirmationDialog("Delete Workout", isPresented: $showingDeleteAlert, titleVisibility: .visible) {
-            Button("Delete Workout", role: .destructive) {
-                deleteWorkout()
+            .listRowBackground(Color.clear)
+            .confirmationDialog("Delete Workout", isPresented: $showingDeleteAlert, titleVisibility: .visible) {
+                Button("Delete Workout", role: .destructive) {
+                    deleteWorkout()
+                }
+                Button("Cancel", role: .cancel) {
+                    showingDeleteAlert = false
+                }
+            } message: {
+                Text("Are you sure you want to delete this workout? This action cannot be undone.")
             }
-            Button("Cancel", role: .cancel) {
-                showingDeleteAlert = false
-            }
-        } message: {
-            Text("Are you sure you want to delete this workout? This action cannot be undone.")
         }
         
     }
@@ -180,7 +234,5 @@ struct WorkoutView: View {
             print("Failed to delete workout: \(error)")
             isDeleting = false
         }
-        // Go back to SwimView
-//        dismiss()
     }
 }

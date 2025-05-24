@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SetView: View {
     @Bindable var set: SwimSet
+    @State var isCreator: Bool
     @State var chunkNum: Int = 1
     
     var body: some View {
@@ -29,6 +30,7 @@ struct SetView: View {
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(Color(.systemGray4), lineWidth: 1)
                     )
+                    .disabled(!isCreator)
             }
             
             // Number of Rounds section with better alignment
@@ -56,6 +58,7 @@ struct SetView: View {
                             in: 0...10,
                             step: 1
                         )
+                        .disabled(!isCreator)
                         
                         // Min and max labels below slider
                         HStack {
@@ -85,11 +88,10 @@ struct SetView: View {
                 }
                 
                 ForEach(set.setChunks) { chunk in
-                    ChunkView(chunk: chunk)
+                    ChunkView(chunk: chunk, isCreator: isCreator)
                         .padding(.vertical, 4)
                 }
                 
-                // Improved add button
                 Button(action: addChunk) {
                     HStack {
                         Image(systemName: "plus.circle.fill")
@@ -105,6 +107,7 @@ struct SetView: View {
                     .cornerRadius(10)
                 }
                 .buttonStyle(PlainButtonStyle())
+                .disabled(!isCreator)
             }
         }
     }

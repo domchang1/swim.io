@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ChunkView: View {
     @Bindable var chunk: SetChunk
+    @State var isCreator: Bool
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 15) {
             HStack {
@@ -19,13 +21,14 @@ struct ChunkView: View {
                 
                 Spacer()
                 
-                Button(action: { /* delete action */ }) {
-                    Image(systemName: "trash")
-                        .foregroundColor(.red)
+                if isCreator {
+                    Button(action: { /* delete action */ }) {
+                        Image(systemName: "trash")
+                            .foregroundColor(.red)
+                    }
                 }
             }
             
-            // Number x Distance of Type row - simplified approach
             HStack(alignment: .bottom, spacing: 8) {
                 // Number field with label
                 VStack(alignment: .center, spacing: 4) {
@@ -52,6 +55,7 @@ struct ChunkView: View {
                                 chunk.number = 100
                             }
                         }
+                        .disabled(!isCreator)
                 }
                 
                 // "×" symbol with clear width
@@ -85,6 +89,7 @@ struct ChunkView: View {
                                 chunk.distance = 2000
                             }
                         }
+                        .disabled(!isCreator)
                 }
                 
                 // "of" text with clear width
@@ -114,20 +119,20 @@ struct ChunkView: View {
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(Color(.systemGray4), lineWidth: 1)
                     )
-                    .labelsHidden() // Hide any labels
-                    .compositingGroup() // Ensure proper compositing
+                    .labelsHidden()
+                    .compositingGroup()
+                    .disabled(!isCreator)
                 }
             }
             
             // Interval row
             HStack(alignment: .bottom, spacing: 8) {
-                // Use VStack to align Interval label with the text fields
                 VStack(alignment: .leading) {
                     Spacer()
                     Text("Interval")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
-                        .padding(.bottom, 10) // Adjust to align with text fields
+                        .padding(.bottom, 10)
                 }
                 .frame(width: 60, alignment: .leading)
                 
@@ -156,6 +161,7 @@ struct ChunkView: View {
                                 chunk.minutes = 59
                             }
                         }
+                        .disabled(!isCreator)
                 }
                 
                 // ":" symbol with clear width
@@ -190,6 +196,7 @@ struct ChunkView: View {
                                 chunk.seconds = 0
                             }
                         }
+                        .disabled(!isCreator)
                 }
                 
                 Spacer()
@@ -209,6 +216,7 @@ struct ChunkView: View {
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(Color(.systemGray4), lineWidth: 1)
                     )
+                    .disabled(!isCreator)
             }
         }
         .padding(16)
