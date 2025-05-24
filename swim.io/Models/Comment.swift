@@ -10,11 +10,13 @@ import SwiftData
 
 @Model
 class Comment {
-    var username: String
+    var user: AppUser
     var content: String
+    var date: Date
     
-    init(username: String, content: String) {
-        self.username = username
+    init(user: AppUser, content: String) {
+        self.user = user
         self.content = content
+        self.date = Date()
     }
 }

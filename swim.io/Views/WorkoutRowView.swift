@@ -13,6 +13,7 @@ struct WorkoutRowView: View {
     @Environment(\.modelContext) var modelContext
     @Binding var navigationPath: NavigationPath
     @State var liked: Bool = false
+    @State private var showingCommentsView = false
     var unit: String {
         if workout.distanceUnit == .scy {
             return "yards"
@@ -145,8 +146,7 @@ struct WorkoutRowView: View {
                     .frame(height: 44)
                     .contentShape(Rectangle())
                     .onTapGesture {
-                        // Add actual action
-                        print("Comment button tapped")
+                        showingCommentsView = true
                     }
                     Spacer()
                 }
@@ -179,6 +179,10 @@ struct WorkoutRowView: View {
                 }
             }
             .frame(height: 44)
+        }
+        .sheet(isPresented: $showingCommentsView) {
+            CommentsView(workout: workout)
+                .environmentObject(authViewModel)
         }
         .padding(16)
         .background(Color(.systemBackground))
